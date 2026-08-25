@@ -44,14 +44,31 @@ export function buildWhatsappUrl(): string {
  * respuesta (Apps Script no siempre expone CORS legible desde el navegador,
  * por eso `no-cors`: el request sale igual y la fila se guarda, solo no
  * podemos leer la confirmación de vuelta).
+ *
+ * Justo después de esto se abre WhatsApp (a veces literalmente cambiando de
+ * app en el celular), y un `fetch` normal sin terminar puede quedar
+ * cancelado si la página pierde el foco antes de que el pedido salga.
+ * `navigator.sendBeacon` existe exactamente para este caso — el navegador
+ * garantiza que el pedido se envíe aunque la página se descargue enseguida
+ * — así que es la primera opción; `fetch` con `keepalive` queda como
+ * respaldo para navegadores sin sendBeacon.
  */
 export function logToGoogleSheet(data: LeadFormData): void {
   if (!GOOGLE_SCRIPT_URL) return;
+  const payload = JSON.stringify({ ...data, fecha: new Date().toISOString() });
+
+  if (typeof navigator !== "undefined" && navigator.sendBeacon) {
+    const blob = new Blob([payload], { type: "text/plain;charset=UTF-8" });
+    const queued = navigator.sendBeacon(GOOGLE_SCRIPT_URL, blob);
+    if (queued) return;
+  }
+
   fetch(GOOGLE_SCRIPT_URL, {
     method: "POST",
     mode: "no-cors",
+    keepalive: true,
     headers: { "Content-Type": "text/plain" },
-    body: JSON.stringify({ ...data, fecha: new Date().toISOString() }),
+    body: payload,
   }).catch(() => {
     // Silencioso a propósito: un fallo acá nunca debe impedir que el lead
     // llegue a WhatsApp, que es el canal principal.
