@@ -17,6 +17,13 @@ export const GOOGLE_SCRIPT_URL: string | null =
 
 export const WHATSAPP_PHONE = "5514997992312";
 
+/**
+ * Etiqueta fija que viaja en CADA fila de la planilla (columna "Tag"), sin
+ * mostrarse nunca en el formulario. Sirve para identificar el origen del
+ * dato al integrarlo con otras planillas/sistemas.
+ */
+const LEAD_TAG = "[LP-MINIIMPL-FORM]";
+
 export interface LeadFormData {
   nombre: string;
   telefono: string;
@@ -32,7 +39,7 @@ export interface LeadFormData {
  * la conversación.
  */
 const WHATSAPP_MESSAGE =
-  "[LANDINGPAGE-MINIIMPL] - Este es su código de atención, por favor no lo borre.";
+  "[LP-MINIFORM] - Este es su código de atención, por favor no lo borre";
 
 export function buildWhatsappUrl(): string {
   const text = encodeURIComponent(WHATSAPP_MESSAGE);
@@ -78,7 +85,7 @@ function formatFechaBR(date: Date): string {
  */
 export function logToGoogleSheet(data: LeadFormData): void {
   if (!GOOGLE_SCRIPT_URL) return;
-  const payload = JSON.stringify({ ...data, fecha: formatFechaBR(new Date()) });
+  const payload = JSON.stringify({ ...data, tag: LEAD_TAG, fecha: formatFechaBR(new Date()) });
 
   if (typeof navigator !== "undefined" && navigator.sendBeacon) {
     const blob = new Blob([payload], { type: "text/plain;charset=UTF-8" });

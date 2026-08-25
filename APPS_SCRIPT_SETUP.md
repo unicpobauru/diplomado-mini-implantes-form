@@ -23,7 +23,7 @@ function doPost(e) {
     const data = JSON.parse(e.postData.contents);
 
     if (sheet.getLastRow() === 0) {
-      sheet.appendRow(["Fecha", "Nombre", "Teléfono", "Email", "¿Es odontólogo?"]);
+      sheet.appendRow(["Fecha", "Nombre", "Teléfono", "Email", "¿Es odontólogo?", "Tag"]);
     }
 
     sheet.appendRow([
@@ -32,6 +32,7 @@ function doPost(e) {
       data.telefono || "",
       data.email || "",
       data.esOdontologo || "",
+      data.tag || "",
     ]);
 
     return ContentService
@@ -44,6 +45,26 @@ function doPost(e) {
   }
 }
 ```
+
+> La columna **"Tag"** llega con el valor fijo `[LP-MINIIMPL-FORM]` en cada fila —
+> no aparece en ningún campo del formulario, es solo para identificar el origen
+> del dato si más adelante lo cruzas con otras planillas.
+
+## Si ya tenías el script implementado (actualizar sin cambiar la URL)
+
+Como ya implementaste esto antes, hay que actualizar el código sin que la URL
+`/exec` cambie (así no hace falta tocar nada del lado del sitio):
+
+1. Volvé a **Extensiones → Apps Script** en tu planilla.
+2. Reemplazá todo el código por la versión de arriba (con la columna "Tag").
+3. Guardá (`Ctrl+S`).
+4. **Implementar → Gestionar implementaciones**.
+5. Al lado de la implementación activa, clic en el ícono de **lápiz (editar)**.
+6. En "Versión", elegí **Nueva versión**.
+7. Clic en **Implementar**.
+
+La URL sigue siendo la misma — no hace falta mandarme nada de nuevo. Los
+próximos envíos del formulario ya van a traer la columna "Tag" en la planilla.
 
 4. Guarda el proyecto (ícono de disquete arriba a la izquierda). Ponle un nombre, por ejemplo
    **"Recibir leads"**.
