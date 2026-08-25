@@ -1,7 +1,7 @@
 import { GraduationCap, Stethoscope, ShieldCheck, CalendarDays, UserCheck, Star, Flame } from "lucide-react";
 import { Container } from "../components/ui/Container";
 import { WhatsappButton } from "../components/ui/WhatsappButton";
-import { RespondiEmbed } from "../components/ui/RespondiEmbed";
+import { LeadForm } from "../components/ui/LeadForm";
 import { CountUp } from "../components/ui/CountUp";
 import { renderBold } from "../lib/renderBold";
 import { trustPoints } from "../data/trustPoints";
@@ -151,9 +151,7 @@ export function Hero() {
               <p className="max-w-xs text-[13.5px] leading-relaxed text-white/70">
                 Completa el formulario y te llevamos directo a WhatsApp para seguir la conversación.
               </p>
-              <div className="w-full overflow-hidden rounded-2xl bg-white p-1.5 shadow-panel">
-                <RespondiEmbed height="480px" />
-              </div>
+              <LeadForm />
               <span className="text-[11px] text-white/40">
                 Respuesta en menos de 24h · Cupos limitados por grupo
               </span>
