@@ -40,6 +40,29 @@ export function buildWhatsappUrl(): string {
 }
 
 /**
+ * Formatea una fecha al estilo brasileño (DD-MM-AAAA HH:mm:ss, 24h),
+ * siempre en el huso horario de Brasil — independientemente de en qué país
+ * esté la persona que llena el formulario — para que el equipo lea todas
+ * las filas de la planilla con la misma referencia horaria.
+ */
+function formatFechaBR(date: Date): string {
+  const parts = new Intl.DateTimeFormat("pt-BR", {
+    timeZone: "America/Sao_Paulo",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  }).formatToParts(date);
+  const get = (type: string) => parts.find((p) => p.type === type)?.value ?? "00";
+  // Algunos motores devuelven "24" en vez de "00" para la medianoche con hour12:false.
+  const hour = get("hour") === "24" ? "00" : get("hour");
+  return `${get("day")}-${get("month")}-${get("year")} ${hour}:${get("minute")}:${get("second")}`;
+}
+
+/**
  * Envía los datos a la Planilla Google, sin bloquear ni depender de la
  * respuesta (Apps Script no siempre expone CORS legible desde el navegador,
  * por eso `no-cors`: el request sale igual y la fila se guarda, solo no
@@ -55,7 +78,7 @@ export function buildWhatsappUrl(): string {
  */
 export function logToGoogleSheet(data: LeadFormData): void {
   if (!GOOGLE_SCRIPT_URL) return;
-  const payload = JSON.stringify({ ...data, fecha: new Date().toISOString() });
+  const payload = JSON.stringify({ ...data, fecha: formatFechaBR(new Date()) });
 
   if (typeof navigator !== "undefined" && navigator.sendBeacon) {
     const blob = new Blob([payload], { type: "text/plain;charset=UTF-8" });

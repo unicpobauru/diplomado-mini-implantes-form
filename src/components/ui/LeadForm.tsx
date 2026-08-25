@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Loader2 } from "lucide-react";
 import { WhatsappIcon } from "./SocialIcons";
 import { buildWhatsappUrl, logToGoogleSheet, type LeadFormData } from "../../lib/leadForm";
+import { countryCodes } from "../../data/countryCodes";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -12,7 +13,8 @@ const labelClass = "text-left text-[12.5px] font-semibold text-white/70";
 
 export function LeadForm() {
   const [nombre, setNombre] = useState("");
-  const [telefono, setTelefono] = useState("");
+  const [pais, setPais] = useState(countryCodes[0].name);
+  const [telefonoLocal, setTelefonoLocal] = useState("");
   const [email, setEmail] = useState("");
   const [esOdontologo, setEsOdontologo] = useState<"Sí" | "No" | "">("");
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +24,7 @@ export function LeadForm() {
     e.preventDefault();
     setError(null);
 
-    if (!nombre.trim() || !telefono.trim() || !email.trim() || !esOdontologo) {
+    if (!nombre.trim() || !telefonoLocal.trim() || !email.trim() || !esOdontologo) {
       setError("Completa todos los campos para continuar.");
       return;
     }
@@ -32,7 +34,13 @@ export function LeadForm() {
     }
 
     setSubmitting(true);
-    const data: LeadFormData = { nombre: nombre.trim(), telefono: telefono.trim(), email: email.trim(), esOdontologo };
+    const dial = countryCodes.find((c) => c.name === pais)?.dial ?? countryCodes[0].dial;
+    const data: LeadFormData = {
+      nombre: nombre.trim(),
+      telefono: `${dial} ${telefonoLocal.trim()}`,
+      email: email.trim(),
+      esOdontologo,
+    };
 
     logToGoogleSheet(data);
     window.open(buildWhatsappUrl(), "_blank", "noopener,noreferrer");
@@ -58,17 +66,32 @@ export function LeadForm() {
 
       <div className="flex flex-col gap-1.5">
         <label className={labelClass} htmlFor="lead-telefono">
-          Teléfono (DDI + DDD + número)
+          Teléfono (DDD + número)
         </label>
-        <input
-          id="lead-telefono"
-          type="tel"
-          autoComplete="tel"
-          value={telefono}
-          onChange={(e) => setTelefono(e.target.value)}
-          className={inputClass}
-          placeholder="+56 9 1234 5678"
-        />
+        <div className="flex gap-2">
+          <select
+            id="lead-pais"
+            aria-label="País"
+            value={pais}
+            onChange={(e) => setPais(e.target.value)}
+            className={`${inputClass} w-[118px] shrink-0 truncate whitespace-nowrap px-2.5`}
+          >
+            {countryCodes.map((c) => (
+              <option key={c.name} value={c.name} className="bg-[#0f1512] text-white">
+                {c.flag} {c.dial} {c.name}
+              </option>
+            ))}
+          </select>
+          <input
+            id="lead-telefono"
+            type="tel"
+            autoComplete="tel-national"
+            value={telefonoLocal}
+            onChange={(e) => setTelefonoLocal(e.target.value)}
+            className={`${inputClass} flex-1`}
+            placeholder="11 91234-5678"
+          />
+        </div>
       </div>
 
       <div className="flex flex-col gap-1.5">
