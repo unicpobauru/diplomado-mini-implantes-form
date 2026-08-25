@@ -23,7 +23,7 @@ export function Hero() {
           <img
             src="images/hero-miniimplantes.jpg"
             alt="Anclaje esquelético con mini-implantes — ilustración clínica"
-            className="h-full min-h-[640px] w-full object-cover object-[78%_center] sm:min-h-[720px] lg:min-h-[860px] lg:object-center"
+            className="h-full min-h-[640px] w-full object-cover object-[78%_center] opacity-80 sm:min-h-[720px] sm:opacity-100 lg:min-h-[860px] lg:object-center"
           />
           <div
             className="absolute inset-0"
