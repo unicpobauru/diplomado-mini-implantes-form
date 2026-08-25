@@ -23,19 +23,18 @@ export interface LeadFormData {
   esOdontologo: "Sí" | "No";
 }
 
-/** Arma el texto del mensaje de WhatsApp con los datos ya cargados. */
-function buildWhatsappMessage(data: LeadFormData): string {
-  return [
-    "[LANDINGPAGE-MINIIMPL-FORM] Nueva solicitud del formulario:",
-    `Nombre: ${data.nombre}`,
-    `Teléfono: ${data.telefono}`,
-    `Email: ${data.email}`,
-    `¿Es odontólogo?: ${data.esOdontologo}`,
-  ].join("\n");
-}
+/**
+ * Mensaje fijo de WhatsApp para los envíos del formulario. Los datos de la
+ * persona (nombre, teléfono, email, si es odontólogo) ya NO viajan acá — van
+ * únicamente a la Planilla Google (ver logToGoogleSheet). Este mensaje es
+ * solo un código/etiqueta fijo para que el equipo identifique el origen de
+ * la conversación.
+ */
+const WHATSAPP_MESSAGE =
+  "[LANDINGPAGE-MINIIMPL] - Este es su código de atención, por favor no lo borre.";
 
-export function buildWhatsappUrl(data: LeadFormData): string {
-  const text = encodeURIComponent(buildWhatsappMessage(data));
+export function buildWhatsappUrl(): string {
+  const text = encodeURIComponent(WHATSAPP_MESSAGE);
   return `https://wa.me/${WHATSAPP_PHONE}?text=${text}`;
 }
 

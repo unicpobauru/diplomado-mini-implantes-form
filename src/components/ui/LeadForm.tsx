@@ -35,7 +35,7 @@ export function LeadForm() {
     const data: LeadFormData = { nombre: nombre.trim(), telefono: telefono.trim(), email: email.trim(), esOdontologo };
 
     logToGoogleSheet(data);
-    window.open(buildWhatsappUrl(data), "_blank", "noopener,noreferrer");
+    window.open(buildWhatsappUrl(), "_blank", "noopener,noreferrer");
     setSubmitting(false);
   }
 
@@ -118,7 +118,7 @@ export function LeadForm() {
         ) : (
           <WhatsappIcon className="h-4 w-4 shrink-0" />
         )}
-        Continuar por WhatsApp
+        Entrar a la fila del proceso de selección
       </button>
     </form>
   );
