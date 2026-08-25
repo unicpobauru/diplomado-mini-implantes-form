@@ -2,7 +2,6 @@ import { Phone, MapPin } from "lucide-react";
 import { Container } from "../components/ui/Container";
 import { navLinks } from "../data/nav";
 import { InstagramIcon, YoutubeIcon } from "../components/ui/SocialIcons";
-import { useFormModal } from "../components/ui/FormModalContext";
 
 const socials = [
   { icon: InstagramIcon, label: "Instagram", href: "https://www.instagram.com/unicpo.oficial/" },
@@ -10,8 +9,6 @@ const socials = [
 ];
 
 export function Footer() {
-  const { open } = useFormModal();
-
   return (
     <footer className="bg-ink-900 pt-16 text-white/70 sm:pt-20">
       <Container>
@@ -71,14 +68,13 @@ export function Footer() {
             <h4 className="mb-1 text-[13px] font-semibold uppercase tracking-[0.1em] text-white">
               Contacto
             </h4>
-            <button
-              type="button"
-              onClick={open}
+            <a
+              href="#formulario"
               className="flex items-center gap-2 text-[14px] text-white/55 transition-colors hover:text-gold-400"
             >
               <Phone className="h-4 w-4 shrink-0" strokeWidth={1.75} />
               +55 14 99799-2312 (WhatsApp)
-            </button>
+            </a>
             <span className="flex items-start gap-2 text-[14px] text-white/55">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.75} />
               Bauru, São Paulo — Brasil

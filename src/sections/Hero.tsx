@@ -1,6 +1,7 @@
-import { GraduationCap, Stethoscope, ShieldCheck, CalendarDays, UserCheck, Star, MessageCircle, Flame } from "lucide-react";
+import { GraduationCap, Stethoscope, ShieldCheck, CalendarDays, UserCheck, Star, Flame } from "lucide-react";
 import { Container } from "../components/ui/Container";
 import { WhatsappButton } from "../components/ui/WhatsappButton";
+import { RespondiEmbed } from "../components/ui/RespondiEmbed";
 import { CountUp } from "../components/ui/CountUp";
 import { renderBold } from "../lib/renderBold";
 import { trustPoints } from "../data/trustPoints";
@@ -136,26 +137,23 @@ export function Hero() {
               </div>
             </div>
 
-            <div className="flex flex-col items-center justify-center gap-6 border-t border-white/10 bg-white/[0.03] p-8 text-center sm:p-10 lg:border-l lg:border-t-0 lg:p-14">
+            <div
+              id="formulario"
+              className="flex flex-col items-center gap-4 border-t border-white/10 bg-white/[0.03] p-8 text-center sm:p-10 lg:border-l lg:border-t-0 lg:p-12"
+            >
               <span className="eyebrow text-white/70">
                 <span className="h-px w-6 bg-gold-400" aria-hidden />
                 Contacto directo
               </span>
-              <div className="flex flex-col items-center gap-4">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gold-500 text-white">
-                  <MessageCircle className="h-6 w-6" strokeWidth={1.75} />
-                </span>
-                <h3 className="text-2xl font-extrabold leading-tight text-white sm:text-3xl">
-                  Participa en nuestro proceso de selección
-                </h3>
-              </div>
-              <p className="max-w-xs text-[14px] leading-relaxed text-white/70">
-                Sin formularios: escríbenos por WhatsApp y resolvemos tus dudas sobre fechas,
-                inversión y opciones de pago.
+              <h3 className="text-2xl font-extrabold leading-tight text-white sm:text-3xl">
+                Contanos un poco de ti
+              </h3>
+              <p className="max-w-xs text-[13.5px] leading-relaxed text-white/70">
+                Completa el formulario y te llevamos directo a WhatsApp para seguir la conversación.
               </p>
-              <WhatsappButton variant="ghost" size="lg" className="w-full">
-                Hablar por WhatsApp
-              </WhatsappButton>
+              <div className="w-full overflow-hidden rounded-2xl bg-white p-1.5 shadow-panel">
+                <RespondiEmbed height="480px" />
+              </div>
               <span className="text-[11px] text-white/40">
                 Respuesta en menos de 24h · Cupos limitados por grupo
               </span>

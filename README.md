@@ -1,18 +1,23 @@
 # Diplomado en Mini-Implantes — Faculdade UniCPO (Versión B · test A/B)
 
 ⚠️ **Este proyecto es una copia de `unicpo-miniimplantes`**, creada para un test A/B. Es
-idéntico en todo — mismo contenido, mismo diseño — excepto en un punto: **todos los botones de
-WhatsApp abren primero un formulario** (Respondi) en vez de ir directo a WhatsApp. Cualquier
-cambio de contenido/diseño que se haga en la Versión A (`unicpo-miniimplantes`) hay que
-replicarlo acá también si se quiere mantener el test comparable — avisar a Claude para que
-aplique el mismo cambio en ambos.
+idéntico en todo — mismo contenido, mismo diseño — excepto en un punto: **hay un formulario
+embebido arriba de la página** (dentro del Hero, panel "Contacto directo") y **todos los demás
+botones de WhatsApp llevan hasta ahí** en vez de ir directo a WhatsApp. Cualquier cambio de
+contenido/diseño que se haga en la Versión A (`unicpo-miniimplantes`) hay que replicarlo acá
+también si se quiere mantener el test comparable — avisar a Claude para que aplique el mismo
+cambio en ambos.
 
 ## Cómo funciona el formulario (Respondi)
 
 - El formulario vive en Respondi, no en este código: **https://form.respondi.app/jFT4m6ue**
-- Cada botón de WhatsApp de la página (`WhatsappButton`, y los 3 links directos en
-  `FinalCTA.tsx` / `Footer.tsx`) abre un modal (`RespondiFormModal.tsx`) con ese formulario
-  embebido — ver `src/lib/respondi.ts`.
+- Está embebido de forma **inline** (no modal/popup) en `src/sections/Hero.tsx`, dentro del
+  `<div id="formulario">` — usando el componente reutilizable `RespondiEmbed.tsx` (carga el
+  script oficial de Respondi una sola vez) — ver `src/lib/respondi.ts`.
+- **Todos los demás botones de WhatsApp** de la página (`WhatsappButton`, y los 3 links directos
+  en `FinalCTA.tsx` / `Footer.tsx`) son simples anclas `href="#formulario"` — al hacer clic, la
+  página hace scroll suave hasta el formulario arriba (no hay JS extra, es el
+  `scroll-behavior: smooth` que ya tiene el sitio).
 - **La redirección final a WhatsApp se configura DENTRO de Respondi**, no en este código:
   pantalla de finalización del formulario → "Redirigir a un link externo" → pegar el link de
   `src/lib/whatsapp.ts` (tiene el código de campaña `LANDINGPAGE-MINIIMPL-FORM`, para poder

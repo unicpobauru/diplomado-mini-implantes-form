@@ -16,12 +16,10 @@ import { Facility } from "./sections/Facility";
 import { FAQ } from "./sections/FAQ";
 import { FinalCTA } from "./sections/FinalCTA";
 import { Footer } from "./sections/Footer";
-import { FormModalProvider } from "./components/ui/FormModalContext";
-import { RespondiFormModal } from "./components/ui/RespondiFormModal";
 
 function App() {
   return (
-    <FormModalProvider>
+    <>
       <Header />
       <main>
         <Hero />
@@ -39,8 +37,7 @@ function App() {
         <FinalCTA />
       </main>
       <Footer />
-      <RespondiFormModal />
-    </FormModalProvider>
+    </>
   );
 }
 
