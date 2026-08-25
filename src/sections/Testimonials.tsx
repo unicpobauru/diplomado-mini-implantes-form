@@ -21,12 +21,18 @@ function FeaturedMedia({ t }: { t: Testimonial }) {
         loop
         playsInline
         onError={() => setVideoFailed(true)}
-        className="h-full w-full object-cover"
+        className="h-full w-full object-cover object-top sm:object-center"
       />
     );
   }
 
-  return <img src={t.image} alt={t.name} className="h-full w-full object-cover" />;
+  return (
+    <img
+      src={t.image}
+      alt={t.name}
+      className="h-full w-full object-cover object-top sm:object-center"
+    />
+  );
 }
 
 export function Testimonials() {
