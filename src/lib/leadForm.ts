@@ -39,7 +39,7 @@ export interface LeadFormData {
  * la conversación.
  */
 const WHATSAPP_MESSAGE =
-  "[LP-MINIFORM] - Este es su código de atención, por favor no lo borre";
+  "[LP-MINIIMPL-FORM] - Este es su código de atención, por favor no lo borre";
 
 export function buildWhatsappUrl(): string {
   const text = encodeURIComponent(WHATSAPP_MESSAGE);
