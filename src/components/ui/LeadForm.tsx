@@ -9,6 +9,15 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const inputClass =
   "w-full rounded-xl border border-white/15 bg-white/[0.06] px-4 py-3 text-[14px] text-white placeholder:text-white/35 outline-none transition-colors duration-200 focus:border-gold-400/60 focus:bg-white/[0.09]";
 
+/**
+ * A propósito NO reutiliza `inputClass` (que trae `w-full`): mezclar `w-full`
+ * con un ancho fijo en el mismo elemento hace que el navegador use el que
+ * gane en el CSS compilado, no el que aparece último en el JSX — por eso el
+ * selector de país había quedado enorme y el campo de teléfono, minúsculo.
+ */
+const selectClass =
+  "shrink-0 truncate whitespace-nowrap rounded-xl border border-white/15 bg-white/[0.06] px-2 py-3 text-[13px] text-white outline-none transition-colors duration-200 focus:border-gold-400/60 focus:bg-white/[0.09]";
+
 const labelClass = "text-left text-[12.5px] font-semibold text-white/70";
 
 export function LeadForm() {
@@ -74,7 +83,7 @@ export function LeadForm() {
             aria-label="País"
             value={pais}
             onChange={(e) => setPais(e.target.value)}
-            className={`${inputClass} w-[118px] shrink-0 truncate whitespace-nowrap px-2.5`}
+            className={`${selectClass} w-[84px]`}
           >
             {countryCodes.map((c) => (
               <option key={c.name} value={c.name} className="bg-[#0f1512] text-white">
@@ -88,7 +97,7 @@ export function LeadForm() {
             autoComplete="tel-national"
             value={telefonoLocal}
             onChange={(e) => setTelefonoLocal(e.target.value)}
-            className={`${inputClass} flex-1`}
+            className={`${inputClass} min-w-0 flex-1`}
             placeholder="11 91234-5678"
           />
         </div>
