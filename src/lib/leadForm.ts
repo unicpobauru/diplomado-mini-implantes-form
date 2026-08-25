@@ -2,17 +2,18 @@
  * Formulario propio (sin terceros de formularios). Al enviarse:
  *  1) se registra una fila en una Planilla Google (best-effort, "fire and
  *     forget" — ver GOOGLE_SCRIPT_URL más abajo);
- *  2) se abre WhatsApp con un mensaje pre-cargado que ya trae los datos.
+ *  2) se abre WhatsApp con un mensaje fijo (código de atención), sin los
+ *     datos de la persona — esos ya quedaron en la planilla.
  */
 
 /**
- * ⚠️ Pendiente: pegar acá la URL de implementación ("Web app") del Google Apps
- * Script una vez desplegado (ver public/APPS_SCRIPT_SETUP.md para el
- * paso a paso y el código a pegar). Mientras esto sea null, el formulario
- * sigue funcionando normal — el envío a WhatsApp no depende de esto — solo
- * no queda registro en la planilla.
+ * URL de implementación ("Web app") del Google Apps Script — ver
+ * APPS_SCRIPT_SETUP.md para el paso a paso y el código que corre del otro
+ * lado. Si en algún momento se necesita desactivar el registro en planilla
+ * sin tocar nada más, alcanza con volver esto a `null`.
  */
-export const GOOGLE_SCRIPT_URL: string | null = null;
+export const GOOGLE_SCRIPT_URL: string | null =
+  "https://script.google.com/macros/s/AKfycbyRKOiXqka6VDiDz0N7X8b7QRPJsXSLCAt8HAGOD_CKKfQSgrtTERJHu93lNhyoBkRBIA/exec";
 
 export const WHATSAPP_PHONE = "5514997992312";
 
