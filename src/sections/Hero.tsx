@@ -38,7 +38,7 @@ export function Hero() {
           <div className="mx-auto flex max-w-[780px] flex-col items-center gap-7 text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-gold-400/40 bg-gold-500/15 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-gold-200">
               <Flame className="h-3.5 w-3.5 text-gold-400" strokeWidth={2.5} />
-              Exclusivo para odontólogos · Bauru, Brasil
+              Exclusivo para odontólogos · Presencial en Bauru, Brasil
             </span>
             <h1
               className="text-balance font-extrabold leading-[1.05] tracking-[-0.025em] text-white"
