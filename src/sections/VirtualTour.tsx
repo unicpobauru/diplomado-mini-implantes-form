@@ -131,7 +131,7 @@ export function VirtualTour() {
               src={TOUR_SRC}
               className="absolute inset-0 h-full w-full border-0"
               allow="autoplay; accelerometer; gyroscope; fullscreen; xr-spatial-tracking"
-              loading="eager"
+              loading="lazy"
               allowFullScreen
             />
           </div>

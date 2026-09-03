@@ -4,35 +4,41 @@ import { Container } from "../components/ui/Container";
 import { SectionHeading } from "../components/ui/SectionHeading";
 import { Reveal } from "../components/ui/Reveal";
 import { WhatsappButton } from "../components/ui/WhatsappButton";
+import { useInView } from "../lib/useInView";
 import { differentials, type Differential } from "../data/differentials";
 
 const icons = { clock: Clock, award: Award, cpu: Cpu };
 
-/** Shows the video once it exists at its path; falls back to the still photo if it 404s (or before it's uploaded). */
+const mediaClass =
+  "h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105";
+
+/**
+ * Muestra la foto fija hasta que la tarjeta está por entrar en pantalla, y
+ * recién ahí monta el <video autoPlay> (si existe) — evita que las 3 tarjetas
+ * descarguen y decodifiquen video al mismo tiempo que la imagen del Hero.
+ * Si el video no existe (404) se queda con la foto.
+ */
 function DifferentialMedia({ item }: { item: Differential }) {
   const [videoFailed, setVideoFailed] = useState(false);
-
-  if (item.video && !videoFailed) {
-    return (
-      <video
-        src={item.video}
-        autoPlay
-        muted
-        loop
-        playsInline
-        onError={() => setVideoFailed(true)}
-        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-      />
-    );
-  }
+  const { ref, inView } = useInView<HTMLDivElement>();
 
   return (
-    <img
-      src={item.image}
-      alt=""
-      aria-hidden
-      className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-    />
+    <div ref={ref} className="h-full w-full">
+      {item.video && !videoFailed && inView ? (
+        <video
+          src={item.video}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          onError={() => setVideoFailed(true)}
+          className={mediaClass}
+        />
+      ) : (
+        <img src={item.image} alt="" aria-hidden className={mediaClass} />
+      )}
+    </div>
   );
 }
 

@@ -6,32 +6,38 @@ import { Reveal } from "../components/ui/Reveal";
 import { WhatsappButton } from "../components/ui/WhatsappButton";
 import { InstagramIcon } from "../components/ui/SocialIcons";
 import { renderBold } from "../lib/renderBold";
+import { useInView } from "../lib/useInView";
 import { testimonials, type Testimonial } from "../data/testimonials";
 
-/** Shows the video once it exists at its path; falls back to the still photo if it 404s (or before it's uploaded). */
+const mediaClass = "h-full w-full object-cover object-top sm:object-center";
+
+/**
+ * Muestra la foto fija hasta que la tarjeta está por entrar en pantalla, y
+ * recién ahí monta el <video autoPlay> (si existe) — este video en particular
+ * pesa ~4,6MB, así que evitar que descargue en el primer render ayuda bastante
+ * al LCP/INP. Si el video no existe (404) se queda con la foto.
+ */
 function FeaturedMedia({ t }: { t: Testimonial }) {
   const [videoFailed, setVideoFailed] = useState(false);
-
-  if (t.video && !videoFailed) {
-    return (
-      <video
-        src={t.video}
-        autoPlay
-        muted
-        loop
-        playsInline
-        onError={() => setVideoFailed(true)}
-        className="h-full w-full object-cover object-top sm:object-center"
-      />
-    );
-  }
+  const { ref, inView } = useInView<HTMLDivElement>();
 
   return (
-    <img
-      src={t.image}
-      alt={t.name}
-      className="h-full w-full object-cover object-top sm:object-center"
-    />
+    <div ref={ref} className="h-full w-full">
+      {t.video && !videoFailed && inView ? (
+        <video
+          src={t.video}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          onError={() => setVideoFailed(true)}
+          className={mediaClass}
+        />
+      ) : (
+        <img src={t.image} alt={t.name} className={mediaClass} />
+      )}
+    </div>
   );
 }
 
